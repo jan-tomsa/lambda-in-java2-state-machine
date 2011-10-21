@@ -1,0 +1,9 @@
+Use anonymous inner classes to implement finite state machine.
+
+=== TODO: ===
+Class StateMachine
+	* list of State
+
+Class State
+	* message
+	* map of signals / targets
