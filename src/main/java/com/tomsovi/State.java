@@ -10,7 +10,7 @@ import java.util.Map;
 public class State {
     private String message;
     private Map<String,State> routes;
-    private State defaultRoute;
+    private State defaultRoute = null;
     
     /** 
      * Initialize state.
@@ -20,7 +20,6 @@ public class State {
     public State(String message) {
         this.message = message;
         routes = new HashMap<String,State>();
-        defaultRoute = this;
     }
     
     public void setDefaultRoute( State target ) {
@@ -35,10 +34,17 @@ public class State {
         if (routes.containsKey(signal))
             return routes.get(signal);
         else
-            return defaultRoute;
+            return getDefaultRoute();
     }
     
     public String getMessage() {
         return message;
+    }
+
+    private State getDefaultRoute() {
+        if (defaultRoute == null)
+            return this;
+        else
+            return defaultRoute;
     }
 }

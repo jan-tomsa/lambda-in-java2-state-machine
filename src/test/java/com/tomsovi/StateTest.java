@@ -27,6 +27,17 @@ public class StateTest extends TestCase {
         return new TestSuite( StateTest.class );
     }
 
+    /**
+     * Set up two states with routes from each to each other 
+     * 
+     * +-----+        +------+
+     * |     | --A--> |      |
+     * |First|        |Second|
+     * |     | <--B-- |      |
+     * +-----+        +------+
+     *
+     * @throws Exception 
+     */
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -42,5 +53,10 @@ public class StateTest extends TestCase {
     public void testRouteFromState() {
         State target = state1.route("A");
         assertEquals(state2,target);
+    }
+
+    public void testDefaultRoute() {
+        State target = state1.route("X");
+        assertEquals(state1,target);
     }
 }
