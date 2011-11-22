@@ -18,12 +18,12 @@ public class App
         State stateInParens2 = new State("In parentheses 2");
         State stateError = new State("Error - should not come here");
         states = new ArrayList<State>(Arrays.asList(stateOutside, stateInParens1, stateInParens2, stateError));
-        stateOutside.addRoute("(", stateInParens1);
-        stateOutside.addRoute(")", stateError);
-        stateInParens1.addRoute("(", stateInParens2);
-        stateInParens1.addRoute(")", stateOutside);
-        stateInParens2.addRoute("(", stateError); // too much parantheses
-        stateInParens2.addRoute(")", stateInParens1);
+        stateOutside.addRoute("<", stateInParens1);
+        stateOutside.addRoute(">", stateError);
+        stateInParens1.addRoute("<", stateInParens2);
+        stateInParens1.addRoute(">", stateOutside);
+        stateInParens2.addRoute("<", stateError); // too much parantheses
+        stateInParens2.addRoute(">", stateInParens1);
     }
     
     public void execute(List<String> signals) {
@@ -40,7 +40,7 @@ public class App
     
     public static void main( String[] args )
     {
-        List<String> signals = new ArrayList<String>( Arrays.asList("(","x",")") );
+        List<String> signals = new ArrayList<String>( Arrays.asList("<","x",">") );
         App app = new App();
         app.execute( signals );
     }
