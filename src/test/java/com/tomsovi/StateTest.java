@@ -29,7 +29,7 @@ public class StateTest extends TestCase {
     }
 
     /**
-     * Set up two states with routes from each to each other 
+     * Set up three states with routes from each to each other 
      * 
      * +-----+        +------+            +-----+
      * |     | --A--> |      |            |     |
@@ -45,9 +45,13 @@ public class StateTest extends TestCase {
         state1 = new State("First state");
         state2 = new State("Second state");
         state3 = new State("Third state");
-        state1.addRoute("A", state2);
-        state2.addRoute("B", state1);
-        state2.addRoute("[KLM]", state3);
+        RegExRouter rer1 = new RegExRouter(state1);        
+        rer1.addRoute("A", state2);
+        state1.setRouter(rer1);
+        RegExRouter rer2 = new RegExRouter(state2);
+        rer2.addRoute("B", state1);
+        rer2.addRoute("[KLM]", state3);
+        state2.setRouter(rer2);
     }
     
     /**
@@ -58,11 +62,17 @@ public class StateTest extends TestCase {
         assertEquals(state2,target);
     }
 
+    /**
+     * Test default routing 
+     */
     public void testDefaultRoute() {
         State target = state1.route("X");
         assertEquals(state1,target);
     }
     
+    /**
+     * Test routing from Second to Third state based on RegEx match
+     */
     public void testRegExpRoutePositive() {
         State target = state2.route("L");
         assertEquals(state3, target);

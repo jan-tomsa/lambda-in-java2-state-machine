@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class State {
     private String message;
-    private Map<String,State> routes;
+    private Router router;
     private State defaultRoute = null;
     
     /** 
@@ -19,15 +19,15 @@ public class State {
      */
     public State(String message) {
         this.message = message;
-        routes = new HashMap<String,State>();
+        router = new RegExRouter(this);
     }
     
     public void setDefaultRoute( State target ) {
         defaultRoute = target;
     }
     
-    public void addRoute(String signal, State target) {
-        routes.put(signal, target);
+    public void setRouter( Router newRouter ) {
+        this.router = newRouter;
     }
 
     /**
@@ -38,22 +38,14 @@ public class State {
      *      Otherwise match routing pattern to received signal - route if matches.
      */
     public State route(String signal) {
-        if (routes.containsKey(signal))
-            return routes.get(signal);
-        else {
-            for (String key : routes.keySet()) {
-                if (signal.matches(key))
-                    return routes.get(key);
-            }
-            return getDefaultRoute();
-        }
+        return router.route(signal);
     }
     
     public String getMessage() {
         return message;
     }
 
-    private State getDefaultRoute() {
+    public State getDefaultRoute() {
         if (defaultRoute == null)
             return this;
         else

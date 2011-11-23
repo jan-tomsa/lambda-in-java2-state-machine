@@ -18,12 +18,18 @@ public class App
         State stateInParens2 = new State("In parentheses 2");
         State stateError = new State("Error - should not come here");
         states = new ArrayList<State>(Arrays.asList(stateOutside, stateInParens1, stateInParens2, stateError));
-        stateOutside.addRoute("<", stateInParens1);
-        stateOutside.addRoute(">", stateError);
-        stateInParens1.addRoute("<", stateInParens2);
-        stateInParens1.addRoute(">", stateOutside);
-        stateInParens2.addRoute("<", stateError); // too much parantheses
-        stateInParens2.addRoute(">", stateInParens1);
+        RegExRouter roOutToIn1 = new RegExRouter(stateOutside);
+        roOutToIn1.addRoute("<", stateInParens1);
+        roOutToIn1.addRoute(">", stateError);
+        stateOutside.setRouter(roOutToIn1);
+        RegExRouter roIn1ToIn2 = new RegExRouter(stateInParens1);
+        roIn1ToIn2.addRoute("<", stateInParens2);
+        roIn1ToIn2.addRoute(">", stateOutside);
+        stateInParens1.setRouter(roIn1ToIn2);
+        RegExRouter roIn2ToIn1 = new RegExRouter(stateInParens2);
+        roIn2ToIn1.addRoute("<", stateError); // too much parantheses
+        roIn2ToIn1.addRoute(">", stateInParens1);
+        stateInParens2.setRouter(roIn2ToIn1);
     }
     
     public void execute(List<String> signals) {
