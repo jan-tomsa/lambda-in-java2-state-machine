@@ -1,9 +1,13 @@
-Use anonymous inner classes to implement finite state machine.
+Using anonymous inner classes to implement finite state machine.
 
-=== TODO: ===
 Class StateMachine
-	* list of State
+	* list of States
 
 Class State
 	* message
+	* router
+
+Interface Router 
+
+Class RegExRouter
 	* map of signals / targets
